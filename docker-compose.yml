@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    environment:
+      DOCKER_API_VERSION: 1.22
+      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: "hamburger-orders:1:1"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  egenhackathon:
+    depends_on:
+      - db
+      - mongo
+      - kafka
+      - zookeeper
+    build: .
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/thb_db
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/user_db?useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root1234
+    ports:
+      - "8080:8080"
+    restart: always
