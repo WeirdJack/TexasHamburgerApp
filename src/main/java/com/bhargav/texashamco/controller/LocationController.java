@@ -44,6 +44,13 @@ public class LocationController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PutMapping(value = "/update/{location_name}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateLocationByName(@PathVariable String locationName, String newLocationName){
+
+        locationService.updateLocationByName(locationName, newLocationName);
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity updateLocation(@RequestBody LocationDTO locationDTO){
 
@@ -55,6 +62,20 @@ public class LocationController {
     public ResponseEntity deleteLocation(@RequestBody LocationDTO locationDTO){
 
         locationService.deleteLocation(locationDTO);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping(value = "/deleteAll")
+    public ResponseEntity deleteAllLocations(){
+
+        locationService.deleteAllLocations();
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping(value = "/deleteById/{location_Id}")
+    public ResponseEntity deleteLocationById(@PathVariable String locationId){
+
+        locationService.deleteLocationById(locationId);
         return ResponseEntity.ok().build();
     }
 }

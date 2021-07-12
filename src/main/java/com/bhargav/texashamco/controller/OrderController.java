@@ -19,7 +19,7 @@ public class OrderController {
     OrderService orderService;
 
     @PostMapping(value = "/createOrder", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addLocation(@RequestBody OrderDTO orderDTO){
+    public ResponseEntity createOrder(@RequestBody OrderDTO orderDTO){
 
         orderService.placeOrder(orderDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
