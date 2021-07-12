@@ -26,6 +26,8 @@ public class MenuService {
 
     @Autowired
     MongoTemplate mongoTemplate;
+
+    @Autowired
     MenuMapper menuMapper;
 
     public List<MenuDTO> getAllMenus(){

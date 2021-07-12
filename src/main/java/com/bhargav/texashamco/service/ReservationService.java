@@ -17,6 +17,8 @@ public class ReservationService {
 
     @Autowired
     ReservationRepository reservationRepository;
+
+    @Autowired
     ReservationMapper reservationMapper;
 
     public List<ReservationDTO> getAllReservations(){

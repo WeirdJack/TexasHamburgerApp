@@ -12,6 +12,8 @@ public class OrderService {
 
     @Autowired
     OrderRepository orderRepository;
+
+    @Autowired
     OrderMapper orderMapper;
 
     public void placeOrder(OrderDTO orderDTO) {

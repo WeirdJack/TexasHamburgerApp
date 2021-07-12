@@ -1,9 +1,15 @@
 package com.bhargav.texashamco.service;
 
 import com.bhargav.texashamco.dto.LocationDTO;
+import com.bhargav.texashamco.exception.ResourceNotFoundException;
 import com.bhargav.texashamco.mapper.LocationMapper;
 import com.bhargav.texashamco.models.Location;
+import com.bhargav.texashamco.models.Reservation;
 import com.bhargav.texashamco.repository.LocationRepository;
+import com.bhargav.texashamco.repository.MenuRepository;
+import com.bhargav.texashamco.repository.OpenHoursRepository;
+import com.bhargav.texashamco.repository.ReservationRepository;
+import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +18,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +30,18 @@ public class LocationService {
     LocationRepository locationRepository;
 
     @Autowired
+    MenuRepository menuRepository;
+
+    @Autowired
+    OpenHoursRepository openHoursRepository;
+
+    @Autowired
+    ReservationRepository reservationRepository;
+
+    @Autowired
     MongoTemplate mongoTemplate;
+
+    @Autowired
     LocationMapper locationMapper;
 
     public List<LocationDTO> getAllLocations(){
@@ -57,7 +75,22 @@ public class LocationService {
 
     public void addLocation(LocationDTO locationDTO) {
 
-        locationRepository.insert(locationMapper.toLocation(locationDTO));
+        Location location = locationMapper.toLocation(locationDTO);
+        locationRepository.insert(location);
+        menuRepository.insert(location.getMenu());
+        openHoursRepository.insert(location.getOpenHours());
+        reservationRepository.insert(location.getReservations());
+    }
+
+    public void updateLocationByName(String locationName, String newLocationName) {
+
+        Location existing = locationRepository.findByName(locationName, newLocationName);
+
+        if(existing == null)
+            throw new ResourceNotFoundException(locationName, "Location");
+
+        existing.setName(newLocationName);
+        locationRepository.save(existing);
     }
 
     public void updateLocation(LocationDTO locationDTO) {
@@ -68,7 +101,7 @@ public class LocationService {
                         String.format("Cannot find Location with ID: " + location.getId())
                 ));
 
-        existing.setId(location.getId());
+
         existing.setName(location.getName());
         locationRepository.save(existing);
     }
@@ -82,5 +115,20 @@ public class LocationService {
                 ));
 
         locationRepository.delete(existing);
+    }
+
+    public void deleteAllLocations() {
+
+        locationRepository.deleteAll();
+    }
+
+    public void deleteLocationById(String id) {
+
+        locationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException(
+                        String.format("Cannot find Location with ID: " + id)
+                ));
+
+        locationRepository.deleteById(id);
     }
 }

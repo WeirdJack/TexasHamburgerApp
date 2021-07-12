@@ -18,6 +18,8 @@ public class OpenHoursService {
 
     @Autowired
     OpenHoursRepository openHoursRepository;
+
+    @Autowired
     OpenHoursMapper openHoursMapper;
 
     public List<OpenHoursDTO> getAllOpenHours(){
