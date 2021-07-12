@@ -6,7 +6,7 @@ import com.bhargav.texashamco.models.Order;
 import com.bhargav.texashamco.models.Reservation;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface OrderMapper {
 
     OrderDTO toOrderDTO(Order order);
