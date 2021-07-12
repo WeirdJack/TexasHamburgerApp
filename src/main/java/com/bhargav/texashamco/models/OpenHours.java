@@ -3,10 +3,12 @@ package com.bhargav.texashamco.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.joda.time.DateTime;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import org.springframework.data.annotation.Id;
-import java.time.ZonedDateTime;
 
 @Document(collection = "OpenHours")
 @Data
@@ -16,6 +18,10 @@ public class OpenHours {
 
     @Id
     private String id;
-    private ZonedDateTime openingTime;
-    private ZonedDateTime closingTime;
+
+    @CreatedDate
+    private DateTime openingTime;
+
+    @LastModifiedDate
+    private DateTime closingTime;
 }
