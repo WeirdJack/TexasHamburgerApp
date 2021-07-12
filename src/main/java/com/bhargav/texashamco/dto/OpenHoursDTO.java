@@ -2,6 +2,7 @@ package com.bhargav.texashamco.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.joda.time.DateTime;
 
 import java.time.ZonedDateTime;
 
@@ -10,6 +11,6 @@ import java.time.ZonedDateTime;
 public class OpenHoursDTO {
 
     private String id;
-    private ZonedDateTime openingTime;
-    private ZonedDateTime closingTime;
+    private DateTime openingTime;
+    private DateTime closingTime;
 }

@@ -2,6 +2,7 @@ package com.bhargav.texashamco.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.joda.time.DateTime;
 
 import java.time.ZonedDateTime;
 
@@ -10,7 +11,7 @@ import java.time.ZonedDateTime;
 public class ReservationDTO {
 
     private String id;
-    private ZonedDateTime startTime;
-    private ZonedDateTime endTime;
+    private DateTime startTime;
+    private DateTime endTime;
     private int numberOfPeople;
 }
