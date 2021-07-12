@@ -13,6 +13,8 @@ public class ExecutionTime implements HandlerInterceptor {
 
     @Autowired
     Interceptor interceptor;
+
+    @Autowired
     InterceptorService interceptorService;
 
     @Override
